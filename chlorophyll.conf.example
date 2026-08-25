@@ -1,0 +1,47 @@
+# chlorophyll configuration
+# Copy this file to "chlorophyll.conf" (same folder) and edit.
+# Format: key = value. Lines starting with # or ; are comments. Blank lines ignored.
+# All keys are optional; anything omitted falls back to the built-in default shown here.
+
+# --- Work-hours window ------------------------------------------------------
+# Days the tool is allowed to be active. Three-letter English abbreviations,
+# comma-separated. Case-insensitive.
+WorkDays = Mon,Tue,Wed,Thu,Fri
+
+# Start / end of the active window, 24-hour HH:mm local time.
+WorkStart = 08:00
+WorkEnd   = 17:30
+
+# --- Optional lunch gap -----------------------------------------------------
+# Stand down for a stretch around midday so you don't look pinned to the desk.
+# Leave LunchStart blank to disable the gap entirely.
+LunchStart         = 12:00
+LunchMinutes       = 45
+# The gap's start time is randomized by +/- this many minutes each day.
+LunchJitterMinutes = 15
+
+# --- Nudge behavior ---------------------------------------------------------
+# How the idle timer is reset each tick:
+#   F15         - press the F15 key (no physical key, no app maps it) [recommended]
+#   MouseJiggle - relative mouse move of (0,0)
+#   ScrollLock  - toggle Scroll Lock twice (nets to no change)
+NudgeMethod = F15
+
+# Cadence: sleep a random number of seconds in [Min, Max] between ticks.
+MinIntervalSec = 30
+MaxIntervalSec = 90
+
+# Only nudge once you've genuinely been idle at least this many seconds, so the
+# tool never fights your real typing. Set at or below MinIntervalSec.
+NudgeAfterIdleSeconds = 45
+
+# --- Lock / sleep prevention ------------------------------------------------
+# Teams goes Away the moment the workstation locks, regardless of injected
+# input, so keeping the session unlocked is usually required for this to work.
+# NOTE: PreventDisplayOff keeps your screen on and readable to anyone nearby.
+PreventLock       = true
+PreventDisplayOff = true
+
+# --- Logging ----------------------------------------------------------------
+# Debug | Info | Warn | Off. Logs rotate under %LOCALAPPDATA%\chlorophyll\logs.
+LogLevel = Info
