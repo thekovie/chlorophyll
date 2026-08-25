@@ -30,6 +30,7 @@ param(
     [Parameter(ParameterSetName = 'PauseFor')] [int]$PauseFor,
     [Parameter(ParameterSetName = 'Toggle')]   [switch]$Toggle,
     [Parameter(ParameterSetName = 'Off')]      [switch]$Off,
+    [Parameter(ParameterSetName = 'Help')]     [switch]$Help,
 
     [string]$ConfigPath,
     [ValidateSet('Debug', 'Info', 'Warn', 'Off')][string]$LogLevel
@@ -255,9 +256,46 @@ function Start-Loop {
     }
 }
 
+function Show-Usage {
+    Write-Host ''
+    Write-Host 'chlorophyll - keep Microsoft Teams on Available during work hours'
+    Write-Host '================================================================'
+    Write-Host ''
+    Write-Host 'USAGE'
+    Write-Host '  chlorophyll <command>'
+    Write-Host ''
+    Write-Host 'COMMANDS'
+    Write-Host '  -Start           Run the presence keeper (autostart normally does this)'
+    Write-Host '  -Status          Show current state: active/paused, idle seconds, next wake'
+    Write-Host '  -Pause           Stop nudging + release the lock hold; stays running'
+    Write-Host '  -PauseFor <min>  Pause for N minutes, then auto-resume  (e.g. -PauseFor 90)'
+    Write-Host '  -Resume          Go active now (still respects your work hours)'
+    Write-Host '  -Toggle          Flip between paused and active'
+    Write-Host '  -Off             Off for the rest of today; auto-resumes tomorrow'
+    Write-Host '  -Stop            Fully quit the background process'
+    Write-Host '  -Once            Send a single nudge and exit (smoke test)'
+    Write-Host '  -Help            This text'
+    Write-Host ''
+    Write-Host 'OPTIONS'
+    Write-Host '  -ConfigPath <path>   Use a specific chlorophyll.conf'
+    Write-Host '  -LogLevel <level>    Debug | Info | Warn | Off  (with -Start / -Once)'
+    Write-Host ''
+    Write-Host 'EXAMPLES'
+    Write-Host '  chlorophyll -Status'
+    Write-Host '  chlorophyll -PauseFor 60'
+    Write-Host '  chlorophyll -Off'
+    Write-Host ''
+    Write-Host 'Config lives in chlorophyll.conf (see chlorophyll.conf.example).'
+    Write-Host 'For mid-day control without a terminal, install Desktop shortcuts:'
+    Write-Host '  tools\install-autostart.ps1 -Shortcuts'
+    Write-Host ''
+}
+
 # ---------------------------------------------------------------------------
 # dispatch
 # ---------------------------------------------------------------------------
+
+if ($Help) { Show-Usage; return }
 
 # Control/status verbs don't need config or logging init.
 switch ($PSCmdlet.ParameterSetName) {

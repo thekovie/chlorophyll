@@ -59,20 +59,43 @@ powershell -ExecutionPolicy Bypass -File src\ps\Chlorophyll.ps1 -Once -LogLevel 
 powershell -ExecutionPolicy Bypass -WindowStyle Hidden -File src\ps\Chlorophyll.ps1 -Start
 ```
 
+## Make it a `chlorophyll` command (recommended)
+
+So you never have to `cd` to the repo or type the `.ps1` path:
+
+```powershell
+tools\install-command.ps1     # adds a 'chlorophyll' launcher to your user PATH
+```
+
+Open a **new** terminal, then from anywhere:
+
+```powershell
+chlorophyll -status
+chlorophyll -pausefor 60
+chlorophyll -help
+```
+
+Remove it with `tools\install-command.ps1 -Uninstall`. (Using the exe build?
+`tools\install-command.ps1 -Exe`, then `chlorophyll status` with no dash.)
+
 ## Controlling it mid-day
 
 ```powershell
-Chlorophyll.ps1 -Status          # running / paused, next wake, seconds idle, resume time
-Chlorophyll.ps1 -Pause           # stop nudging + release lock hold; stays running
-Chlorophyll.ps1 -PauseFor 60     # pause 60 min, then auto-resume ("back by 3")
-Chlorophyll.ps1 -Resume          # go active now (still respects work hours)
-Chlorophyll.ps1 -Toggle          # flip paused/active (bind to a hotkey)
-Chlorophyll.ps1 -Off             # done for today; auto-resumes tomorrow at WorkStart
-Chlorophyll.ps1 -Stop            # fully exit the process
+chlorophyll -status          # running / paused, next wake, seconds idle, resume time
+chlorophyll -pause           # stop nudging + release lock hold; stays running
+chlorophyll -pausefor 60     # pause 60 min, then auto-resume ("back by 3")
+chlorophyll -resume          # go active now (still respects work hours)
+chlorophyll -toggle          # flip paused/active (bind to a hotkey)
+chlorophyll -off             # done for today; auto-resumes tomorrow at WorkStart
+chlorophyll -stop            # fully exit the process
+chlorophyll -help            # full command list
 ```
 
-`tools\install-autostart.ps1 -Shortcuts` drops **Pause 1h / Resume / Off for today**
-shortcuts on your Desktop so those are a double-click.
+(Haven't installed the command yet? The same verbs work as
+`powershell -ExecutionPolicy Bypass -File src\ps\Chlorophyll.ps1 -Status`.)
+
+Prefer no terminal at all? `tools\install-autostart.ps1 -Shortcuts` drops
+**Pause 1h / Resume / Off for today / Status** shortcuts on your Desktop.
 
 ## If the PowerShell path is blocked
 
