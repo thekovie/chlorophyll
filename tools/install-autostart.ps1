@@ -40,7 +40,8 @@ $TaskName   = 'chlorophyll'
 $DesktopLnks = @(
     (Join-Path $Desktop 'chlorophyll - Pause 1h.lnk'),
     (Join-Path $Desktop 'chlorophyll - Resume.lnk'),
-    (Join-Path $Desktop 'chlorophyll - Off for today.lnk')
+    (Join-Path $Desktop 'chlorophyll - Off for today.lnk'),
+    (Join-Path $Desktop 'chlorophyll - Status.lnk')
 )
 
 $wsh = New-Object -ComObject WScript.Shell
@@ -114,7 +115,15 @@ if ($Shortcuts) {
     New-Lnk $DesktopLnks[0] $pause.Target  $pause.Args  'Pause chlorophyll for 1 hour'
     New-Lnk $DesktopLnks[1] $resume.Target $resume.Args 'Resume chlorophyll'
     New-Lnk $DesktopLnks[2] $off.Target    $off.Args    'Turn chlorophyll off for the rest of today'
-    Write-Host 'Created Desktop control shortcuts: Pause 1h / Resume / Off for today.'
+
+    # Status opens a VISIBLE window (style 1) that stays up so you can read it.
+    $statusArgs = if ($Exe) {
+        "-NoProfile -NoExit -Command `"& '$ExePath' status`""
+    } else {
+        "-NoProfile -ExecutionPolicy Bypass -NoExit -File `"$ScriptPath`" -Status"
+    }
+    New-Lnk $DesktopLnks[3] $PsExe $statusArgs 'Show chlorophyll status' 1
+    Write-Host 'Created Desktop control shortcuts: Pause 1h / Resume / Off for today / Status.'
 }
 
 Write-Host ''
